@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+pydantic
+SQLAlchemy
+mysqlclient
+python-dotenv
+docker
+pymysql
+cryptography
+python-multipart

@@ -1,0 +1,29 @@
+version: '3.9'
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: patients
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "${DATABASE_LOCAL_PORT}:${DATABASE_CONTAINER_PORT}"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port ${SERVER_PORT} --reload
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    environment:
+      - DATABASE_URL=mysql+pymysql://user:password@db/patients
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - MAIL_FROM=${MAIL_FROM}
+    depends_on:
+      db:
+        condition: service_healthy
