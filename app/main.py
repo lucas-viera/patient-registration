@@ -3,7 +3,6 @@ import shutil
 from fastapi import FastAPI, HTTPException, File, Form, UploadFile, BackgroundTasks
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from fastapi_mail import FastMail, MessageSchema, ConnectionConfig
 from dotenv import load_dotenv
 from app.db import Patient, engine, SessionLocal, Base
 load_dotenv()
